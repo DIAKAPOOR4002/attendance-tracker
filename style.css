@@ -116,6 +116,8 @@ input, select, button {
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
+  z-index: 9999;
 }
 
 .hidden { display: none; }
