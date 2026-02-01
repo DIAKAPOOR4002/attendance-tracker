@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Attendance Tracker</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="container">
+  <h1>📋 Attendance Tracker</h1>
+
+  <div class="form">
+    <select id="semester">
+      <option value="">Select Semester</option>
+      <option>Semester 1</option>
+      <option>Semester 2</option>
+      <option>Semester 3</option>
+      <option>Semester 4</option>
+    </select>
+
+    <input type="text" id="courseName" placeholder="Course Name">
+    
+    <select id="credits">
+      <option value="">Credits</option>
+      <option value="5">5 Credits</option>
+      <option value="4">4 Credits</option>
+      <option value="3">3 Credits</option>
+      <option value="2">2 Credits</option>
+    </select>
+
+    <button onclick="addCourse()">Add Course</button>
+  </div>
+
+  <div id="courses"></div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
