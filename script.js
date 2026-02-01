@@ -1,5 +1,11 @@
 let courses = JSON.parse(localStorage.getItem("courses")) || [];
 
+// 🔒 BACKWARD COMPATIBILITY FIX
+courses = courses.map(c => ({
+  ...c,
+  leaves: Number.isFinite(c.leaves) ? c.leaves : 0
+}));
+
 const creditData = {
   5: { total: 27, safe: 5 },
   4: { total: 20, safe: 4 },
@@ -7,31 +13,26 @@ const creditData = {
   2: { total: 14, safe: 2 }
 };
 
-// Roast pools by severity (NO slurs, but yes swearing)
 const roasts = {
   mild: [
-    "Skipping already? Damn, that was fast.",
-    "Wow. First leave and you’re already testing fate.",
-    "Bold move. Questionable, but bold.",
-    "Nice. Attendance just sighed."
+    "Skipping already? Damn.",
+    "Attendance just rolled its eyes.",
+    "This better be worth it."
   ],
   medium: [
-    "Again? Bro, this isn’t Netflix.",
-    "You’re treating classes like optional DLC. Dumb.",
-    "At this rate, even your alarm hates you.",
-    "You sure this degree is what you want? Because your actions say otherwise."
+    "Again? Seriously?",
+    "Bro this isn’t optional.",
+    "You’re playing a dangerous game."
   ],
   savage: [
-    "Congratulations, dumbass. Attendance is bleeding.",
-    "This is exactly how GPAs die. Slowly. Because of you.",
-    "You’re not unlucky. You’re just irresponsible as hell.",
-    "One more leave and future-you will want to slap present-you."
+    "Congrats dumbass, attendance is bleeding.",
+    "Future you is already pissed.",
+    "This is how GPAs die."
   ],
   nuclear: [
-    "Holy shit. Stop skipping or just drop out already.",
-    "This isn’t freedom, it’s you being lazy as fuck.",
-    "Attendance is on life support. And you pulled the plug.",
-    "If excuses were credits, you’d graduate with honors. Sadly, reality exists."
+    "Holy shit STOP SKIPPING.",
+    "Just drop out then?",
+    "Attendance is on life support 💀"
   ]
 };
 
@@ -74,11 +75,6 @@ function calculate(c) {
   return { percent, deduction, remaining: safe - c.leaves };
 }
 
-function pickRoast(severity) {
-  const pool = roasts[severity];
-  return pool[Math.floor(Math.random() * pool.length)];
-}
-
 function showRoast(course) {
   const s = calculate(course);
   let severity = "mild";
@@ -92,13 +88,25 @@ function showRoast(course) {
     severity === "savage" ? "😡" :
     severity === "medium" ? "😒" : "😔";
 
-  document.getElementById("roastText").textContent = pickRoast(severity);
+  document.getElementById("roastText").textContent =
+    roasts[severity][Math.floor(Math.random() * roasts[severity].length)];
+
   document.getElementById("roastBox").classList.remove("hidden");
 }
 
 function closeRoast() {
   document.getElementById("roastBox").classList.add("hidden");
 }
+
+// 🔥 CLICK ANYWHERE TO CLOSE
+document.addEventListener("click", e => {
+  if (e.target.id === "roastBox") closeRoast();
+});
+
+// 🔥 ESC KEY ESCAPE
+document.addEventListener("keydown", e => {
+  if (e.key === "Escape") closeRoast();
+});
 
 function render() {
   const div = document.getElementById("courses");
